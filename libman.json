@@ -6,7 +6,7 @@
       "files": [
         "jquery.js"
       ],
-      "destination": "wwwroot/lib/jquery/dist/"
+      "destination": "wwwroot/lib/jquery/"
     },
     {
       "provider": "cdnjs",
@@ -17,7 +17,7 @@
     {
       "provider": "unpkg",
       "library": "bootstrap@4.5.0",
-      "destination": "wwwroot/lib/dist/"
+      "destination": "wwwroot/lib/"
     }
   ],
     "version": "1.0"
