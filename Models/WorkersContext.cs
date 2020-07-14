@@ -6,23 +6,16 @@ namespace Workers.Models
 {
     public partial class WorkersContext : DbContext
     {
-        public WorkersContext()
-        {
-        }
-
         public WorkersContext(DbContextOptions<WorkersContext> options)
-            : base(options)
-        {
-        }
-
+            : base(options) => Database.EnsureCreated();
+       
         public virtual DbSet<WorkersModel> WorkersTable { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseMySql("server=localhost;userid=root;password=onlyoffice;database=database_test;charset=utf8;persist security info=True", x => x.ServerVersion("8.0.21-mysql"));
+                optionsBuilder.UseMySql("Server=localhost;UserId=root;Password=onlyoffice;Database=database_test;CharSet=utf8;Persist Security Info=True");
             }
         }
 
