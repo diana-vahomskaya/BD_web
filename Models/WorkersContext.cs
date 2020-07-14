@@ -15,7 +15,7 @@ namespace Workers.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql("Server=localhost;UserId=root;Password=onlyoffice;Database=database_test;CharSet=utf8;Persist Security Info=True");
+                optionsBuilder.UseMySql("WorkersContext");
             }
         }
 
