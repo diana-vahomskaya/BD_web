@@ -32,24 +32,29 @@ namespace Workers
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
+
             services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.AddControllersWithViews()
-                .AddDataAnnotationsLocalization()
+                .AddDataAnnotationsLocalization(options => {
+                    options.DataAnnotationLocalizerProvider = (type, factory) =>
+                        factory.Create(typeof(Resource));
+                })
                 .AddViewLocalization();
 
             services.Configure<RequestLocalizationOptions>(options =>
             {
                 var supportedCultures = new[]
                 {
-                    new CultureInfo("ru"),
-                    new CultureInfo("en")
+                    new CultureInfo("en"),
+                   // new CultureInfo("de"),
+                    new CultureInfo("ru")
                 };
 
                 options.DefaultRequestCulture = new RequestCulture("ru");
                 options.SupportedCultures = supportedCultures;
                 options.SupportedUICultures = supportedCultures;
             });
+
             services.AddDbContext<WorkersContext>(options => options.UseMySql(Configuration.GetConnectionString("WorkersContext")));
             services.AddControllersWithViews();
             services.AddScoped<BdBrain, SQLrequest>();
@@ -58,7 +63,7 @@ namespace Workers
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-          
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

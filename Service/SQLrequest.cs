@@ -11,11 +11,11 @@ namespace Workers
     public class SQLrequest:BdBrain
     {
         private readonly ILogger<SQLrequest> _logger;
-        public WorkersContext WorkersContext { get; set; }
+        public WorkersContext WorkersContext { get;}
 
-        public SQLrequest(WorkersContext workersBdContext,ILogger<SQLrequest>logger)
+        public SQLrequest(WorkersContext workersContext,ILogger<SQLrequest>logger)
         {
-            WorkersContext = workersBdContext;
+            WorkersContext = workersContext;
             _logger = logger;
             _logger.LogDebug("Data base");
         }
@@ -36,7 +36,7 @@ namespace Workers
 
         }
      
-        public void Add(WorkersModel workers)
+        public void Create(WorkersModel workers)
         {
             _logger.LogInformation("Data of workers recieved", nameof(workers));
             if (NewWorkers(workers))

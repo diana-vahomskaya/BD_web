@@ -12,7 +12,7 @@ namespace Workers.Service
         WorkersModel GetWorkers(int id);
         IEnumerable<WorkersModel> GetWorkers();
 
-        void Add(WorkersModel workers);
+        void Create(WorkersModel workers);
 
         void Find(WorkersModel workers);
   

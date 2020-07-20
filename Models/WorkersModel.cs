@@ -31,7 +31,7 @@ namespace Workers.Models
 
         [Required]
         [StringLength(30)]
-        [Index("Логин занят", IsUnique=true)]
+        [Index("This login already exist", IsUnique=true)]
         [Display(Name = "Login")]
         public string Login { get; set; }
 

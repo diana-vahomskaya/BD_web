@@ -57,9 +57,9 @@
         </dd>
     </dl>
 
-    <form asp-action="Delete" Delete>
+    <form asp-action="DeleteConfirmed" Delete>
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Удалить" class="btn btn-danger" /> |
+        <input type="submit" value=@Resource["Delete"] class="btn btn-danger" /> |
         <a asp-action="Index">@Resource["Back to List"]</a>
     </form>
 </div>

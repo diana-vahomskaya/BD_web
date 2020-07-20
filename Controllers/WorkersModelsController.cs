@@ -23,18 +23,16 @@ namespace Workers.Controllers
 
         // private readonly WorkersContext _context;
         private readonly ILogger<WorkersModelsController> _logger;
-        private readonly IStringLocalizer<Resource> Resource;
-        private readonly IConfiguration config;
-
+       
+      
         public BdBrain Bd;
         public WorkersModel CurrentUser { get; private set; }
-        public WorkersModelsController(BdBrain bd, ILogger<WorkersModelsController> logger, IStringLocalizer<WorkersModelsController> _Resource, IConfiguration config )
+        public WorkersModelsController(BdBrain bd, ILogger<WorkersModelsController> logger )
         {
             Bd = bd;
             _logger = logger;
             _logger.LogDebug("WorkersModelControlller");
 
-            this.config = config;
         }
         //public WorkersModelsController(WorkersContext context)
         // {
@@ -99,7 +97,7 @@ namespace Workers.Controllers
                 _logger.LogWarning("Not all is fieled");
                 return View();
             }
-            Bd.Add(workers);
+            Bd.Create(workers);
             return RedirectToAction("Index");
         }
 
@@ -121,10 +119,9 @@ namespace Workers.Controllers
 
         [HttpGet]
         [ActionName("Delete")]
-        public IActionResult Delete(int id)
+        public IActionResult DeleteWorker(int id)
         {
             if (Bd.GetWorkers(id) != null) return View(Bd.GetWorkers(id));
-
             return NotFound();
         }
 
