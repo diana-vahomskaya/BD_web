@@ -1,10 +1,11 @@
 ﻿@model Workers.Models.WorkersModel
-
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<Workers.Resource> Resource
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h1> Редактировать </h1>
+<h1> @Resource["Edit"] </h1>
 
 <!--<h4>WorkersModel</h4>-->
 <hr />
@@ -56,7 +57,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">@Resource["Back to List"]</a>
 </div>
 
 @section Scripts {

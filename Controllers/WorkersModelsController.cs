@@ -1,178 +1,154 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Amazon.Auth.AccessControlPolicy;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using Workers.Models;
+using Workers.Service;
 
 namespace Workers.Controllers
 {
     public class WorkersModelsController : Controller
     {
-        private readonly WorkersContext _context;
 
-        public WorkersModelsController(WorkersContext context)
+        // private readonly WorkersContext _context;
+        private readonly ILogger<WorkersModelsController> _logger;
+        private readonly IStringLocalizer<Resource> Resource;
+        private readonly IConfiguration config;
+
+        public BdBrain Bd;
+        public WorkersModel CurrentUser { get; private set; }
+        public WorkersModelsController(BdBrain bd, ILogger<WorkersModelsController> logger, IStringLocalizer<WorkersModelsController> _Resource, IConfiguration config )
         {
-            _context = context;
+            Bd = bd;
+            _logger = logger;
+            _logger.LogDebug("WorkersModelControlller");
+
+            this.config = config;
         }
+        //public WorkersModelsController(WorkersContext context)
+        // {
+        //     _context = context;
+        //}
 
         // GET: WorkersModels
-       /* public async Task<IActionResult> Index()
-        {
-            return View(await _context.WorkersTable.ToListAsync());
-        }
-       */
-        public async Task<IActionResult> Index(string workersPlace, string searchString)
-        {
-            IQueryable<string> genreQuery = from m in _context.WorkersTable
-                                            orderby m.Place
-                                            select m.Place;
-            var workers = from m in _context.WorkersTable
-                          select m;
 
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                workers = workers.Where(s => s.Name.Contains(searchString));
-            }
 
-            if (!string.IsNullOrEmpty(workersPlace))
-            {
-                workers = workers.Where(x => x.Place == workersPlace);
-            }
+        public IActionResult Index() => View(Bd.GetWorkers());
+        
+            /* IQueryable<string> genreQuery = from m in bd.WorkersTable
+                                             orderby m.Place
+                                             select m.Place;
+             var workers = from m in _context.WorkersTable
+                           select m;
 
-            var workersPlaceVM = new PlaceViewModel
-            {
-                Place = new SelectList(await genreQuery.Distinct().ToListAsync()),
-                workers = await workers.ToListAsync()
-            };
+             if (!String.IsNullOrEmpty(searchString))
+             {
+                 workers = workers.Where(s => s.Name.Contains(searchString));
+             }
 
-            return View(workersPlaceVM);
-        }
+             if (!string.IsNullOrEmpty(workersPlace))
+             {
+                 workers = workers.Where(x => x.Place == workersPlace);
+             }
+
+             var workersPlaceVM = new PlaceViewModel
+             {
+                 Place = new SelectList(await genreQuery.Distinct().ToListAsync()),
+                 workers = await workers.ToListAsync()
+             };
+
+             return View(workersPlaceVM);*/
+
+           // return View();
+        
+    
         // GET: WorkersModels/Details/5
-        public async Task<IActionResult> Details(int? id)
+        
+        public IActionResult Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var workersModel = await _context.WorkersTable
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (workersModel == null)
-            {
-                return NotFound();
-            }
-
-            return View(workersModel);
+            if (Bd.GetWorkers(id) != null) return View(Bd.GetWorkers(id));
+            _logger.LogWarning("Details can't be opened", id);
+            return NotFound();
         }
-
-        // GET: WorkersModels/Create
+        
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: WorkersModels/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Surname,Birthday,Email,Login,Password, Place")] WorkersModel workersModel)
+        public IActionResult Create(WorkersModel workers)
         {
-            if (ModelState.IsValid)
+            _logger.LogInformation("Data recieved", nameof(workers));
+            if (workers == null) throw new ArgumentNullException("Data cannot be empty", nameof(workers));
+
+            if (!ModelState.IsValid)
             {
-                _context.Add(workersModel);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                _logger.LogWarning("Not all is fieled");
+                return View();
             }
-            return View(workersModel);
+            Bd.Add(workers);
+            return RedirectToAction("Index");
         }
 
-        // GET: WorkersModels/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var workersModel = await _context.WorkersTable.FindAsync(id);
-            if (workersModel == null)
-            {
-                return NotFound();
-            }
-            return View(workersModel);
+            if (Bd.GetWorkers(id) != null) return View(Bd.GetWorkers(id));
+            
+            return NotFound();
         }
 
-        // POST: WorkersModels/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Surname,Birthday,Email,Login,Password, Place")] WorkersModel workersModel)
+        public IActionResult Edit(WorkersModel workers)
         {
-            if (id != workersModel.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(workersModel);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!WorkersModelExists(workersModel.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(workersModel);
+            _logger.LogInformation("Data opened", nameof(workers));
+            Bd.Edit(workers);
+            return RedirectToAction("Index");
         }
 
-        // GET: WorkersModels/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        [HttpGet]
+        [ActionName("Delete")]
+        public IActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (Bd.GetWorkers(id) != null) return View(Bd.GetWorkers(id));
 
-            var workersModel = await _context.WorkersTable
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (workersModel == null)
-            {
-                return NotFound();
-            }
-
-            return View(workersModel);
+            return NotFound();
         }
 
-        // POST: WorkersModels/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        [HttpPost]
+        public IActionResult DeleteConfirmed(int id)
         {
-            var workersModel = await _context.WorkersTable.FindAsync(id);
-            _context.WorkersTable.Remove(workersModel);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+             if (Bd.GetWorkers(id) != null) Bd.Remove(Bd.GetWorkers(id));
+
+             _logger.LogInformation("Worker deleted", id);
+
+             return RedirectToAction("Index");
         }
 
-        private bool WorkersModelExists(int id)
+        [AllowAnonymous]
+        [HttpPost]
+        public IActionResult SetLanguage(string culture, string returnUrl)
         {
-            return _context.WorkersTable.Any(e => e.Id == id);
+            Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+            );
+            return LocalRedirect(returnUrl);
         }
+      
     }
 }

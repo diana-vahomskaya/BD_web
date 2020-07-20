@@ -9,7 +9,7 @@ namespace Workers.Models
         public WorkersContext(DbContextOptions<WorkersContext> options)
             : base(options) => Database.EnsureCreated();
        
-        public virtual DbSet<WorkersModel> WorkersTable { get; set; }
+       public virtual DbSet<WorkersModel> WorkersTable { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

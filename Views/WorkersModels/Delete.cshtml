@@ -1,12 +1,14 @@
-﻿@model Workers.Models.WorkersModel
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<Workers.Resource> Resource
+@model WorkersModel
 
 @{
     ViewData["Title"] = "Delete";
 }
 
-<h1>Удаление</h1>
+<h1>@Resource["Delete"]</h1>
 
-<h3>Вы уверены, что хотите удалить?</h3>
+<h3>@Resource["Are you sure?"]</h3>
 <div>
     <!--<h4>WorkersModel</h4>-->
     <hr />
@@ -54,10 +56,10 @@
             @Html.DisplayFor(model => model.Place)
         </dd>
     </dl>
-    
-    <form asp-action="Delete">
+
+    <form asp-action="Delete" Delete>
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Удалить" class="btn btn-danger" /> |
+        <a asp-action="Index">@Resource["Back to List"]</a>
     </form>
 </div>

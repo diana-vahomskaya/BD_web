@@ -1,8 +1,10 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<Workers.Resource> Resource
+@{
+    ViewData["Title"] = @Resource["Home Page"];
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-   
+    <h1 class="display-4">@Resource["Welcome"]</h1>
+
 </div>
