@@ -79,6 +79,7 @@ namespace Workers
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
             var options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
             app.UseRequestLocalization(options.Value);
@@ -86,7 +87,7 @@ namespace Workers
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=WorkersModels}/{action=Index}/{id?}");
             });
         }
     }
