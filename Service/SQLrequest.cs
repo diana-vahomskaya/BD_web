@@ -26,6 +26,14 @@ namespace Workers
             return WorkersContext.WorkersTable.FirstOrDefault(p => p.Id == id);
         }
 
+        public WorkersModel GetLogin(string login)
+        {
+            _logger.LogInformation("Login of a worker", login);
+
+            return WorkersContext.WorkersTable.FirstOrDefault(p => p.Login == login);
+        }
+
+
         public IEnumerable<WorkersModel> GetWorkers()
         {
             _logger.LogInformation("List of workers");

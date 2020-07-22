@@ -38,12 +38,14 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
-                        
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="WorkersModels" asp-action="Index">@Resource["Workers"]</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Authorization">@Resource["Authorization"]</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="WorkersModels" asp-action="Create">@Resource["Registration"]</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Registration">@Resource["Registration"]</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="WorkersModels" asp-action="Index">@Resource["Workers"]</a>
                         </li>
 
                         <li class="nav-item">

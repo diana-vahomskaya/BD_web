@@ -10,6 +10,7 @@ namespace Workers.Service
     {
        
         WorkersModel GetWorkers(int id);
+        WorkersModel GetLogin(string log);
         IEnumerable<WorkersModel> GetWorkers();
 
         void Create(WorkersModel workers);

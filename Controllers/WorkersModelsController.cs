@@ -26,7 +26,7 @@ namespace Workers.Controllers
        
       
         public BdBrain Bd;
-        public WorkersModel CurrentUser { get; private set; }
+     
         public WorkersModelsController(BdBrain bd, ILogger<WorkersModelsController> logger )
         {
             Bd = bd;
@@ -110,6 +110,7 @@ namespace Workers.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "RolePolicy")]
         public IActionResult Edit(WorkersModel workers)
         {
             _logger.LogInformation("Data opened", nameof(workers));
@@ -118,6 +119,7 @@ namespace Workers.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "RolePolicy")]
         [ActionName("Delete")]
         public IActionResult DeleteWorker(int id)
         {
@@ -139,6 +141,12 @@ namespace Workers.Controllers
         [HttpPost]
         public IActionResult SetLanguage(string culture, string returnUrl)
         {
+            var worker = Bd.GetLogin(User.Identity.Name);
+            if (worker != null)
+            {
+                worker.Culture = culture;
+                Bd.Edit(worker);
+            }
             Response.Cookies.Append(
                 CookieRequestCultureProvider.DefaultCookieName,
                 CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),

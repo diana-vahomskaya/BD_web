@@ -1,0 +1,36 @@
+﻿@model WorkersModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<Workers.Resource> Resource
+@{ ViewBag.Title = "Авторизация"; }
+
+<link type="text/css" rel="stylesheet" href='@Url.Content("~/css/StyleSheet.css")' />
+
+
+<div class="text-center">
+    <h1 class="display-4">@Resource["Welcome"]</h1>
+</div>
+
+<form asp-controller="Account" method="post">
+    <div asp-validation-summary="ModelOnly"></div>
+    
+    
+    <div class="box">
+        <div class=" main">
+            <div class="textbox">
+                <label asp-for="Login">@Resource["Login"]:</label>
+                <input type="text" asp-for="Login" placeholder=@Resource["Enter your username"] />
+                <span asp-validation-for="Login"></span><br />
+            </div>
+            <div class="textbox">
+                <label asp-for="Password">@Resource["Password"]:  </label>
+                <input type="password" asp-for="Password" placeholder=@Resource["Enter the password"] />
+                <span asp-validation-for="Password"></span>
+            </div>
+        </div>
+        <input class="button" type="submit" value=@Resource["SignIn"] />
+        <div class="button2">
+           <a asp-action="Registration">@Resource["Sign Up"]</a>
+        </div>
+    </div>
+</form>
+

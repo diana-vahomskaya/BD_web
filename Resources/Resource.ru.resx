@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Admin" xml:space="preserve">
+    <value>Админ</value>
+  </data>
   <data name="Are you sure?" xml:space="preserve">
     <value>Вы уверены?</value>
+  </data>
+  <data name="Authorization" xml:space="preserve">
+    <value>Авторизация</value>
   </data>
   <data name="Back to List" xml:space="preserve">
     <value>Назад</value>
@@ -132,6 +138,9 @@
   <data name="Create new worker" xml:space="preserve">
     <value>Зарегестрировать нового рабоника</value>
   </data>
+  <data name="Culture" xml:space="preserve">
+    <value>Культура</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>Удалить</value>
   </data>
@@ -143,6 +152,12 @@
   </data>
   <data name="Email" xml:space="preserve">
     <value>Почтовый адрес</value>
+  </data>
+  <data name="Enter the password" xml:space="preserve">
+    <value>Введите пароль</value>
+  </data>
+  <data name="Enter your username" xml:space="preserve">
+    <value>Введите логин</value>
   </data>
   <data name="Home" xml:space="preserve">
     <value>Дом</value>
@@ -183,6 +198,15 @@
   <data name="Registration" xml:space="preserve">
     <value>Регистрация</value>
   </data>
+  <data name="Role" xml:space="preserve">
+    <value>Роль</value>
+  </data>
+  <data name="Sign Up" xml:space="preserve">
+    <value>Регистрация</value>
+  </data>
+  <data name="SignIn" xml:space="preserve">
+    <value>Вход</value>
+  </data>
   <data name="Surname" xml:space="preserve">
     <value>Фамилия</value>
   </data>
@@ -191,6 +215,9 @@
   </data>
   <data name="Welcome" xml:space="preserve">
     <value>Добро пожаловать</value>
+  </data>
+  <data name="Worker" xml:space="preserve">
+    <value>Работник</value>
   </data>
   <data name="Workers" xml:space="preserve">
     <value>Работники</value>

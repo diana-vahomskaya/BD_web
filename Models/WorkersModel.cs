@@ -46,5 +46,8 @@ namespace Workers.Models
         [Display(Name = "Place")]
         public string Place { get; set; }
 
+        [Display(Name = "Role")]
+        public string Role { get; set; }
+        public string Culture { get; set; }
     }
 }

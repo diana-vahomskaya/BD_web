@@ -2,17 +2,23 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IHtmlLocalizer<Workers.Resource> Resource
 @{
-        ViewData["Title"] = Resource["Create"];
+    ViewData["Title"] = Resource["Create"];
 }
-
 <h1>@Resource["Create new worker"]</h1>
 
 
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Registration">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="textbox">
+                <label asp-for="Role">@Resource["Role"]:</label>
+                <select asp-for="Role">
+                    <option>@Resource["Admin"]</option>
+                    <option>@Resource["Worker"]</option>
+                </select>
+            </div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -43,6 +49,7 @@
                 <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
+           
             <div class="form-group">
                 <label asp-for="Place" class="control-label"></label>
                 <input asp-for="Place" class="form-control" />
@@ -55,10 +62,8 @@
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">@Resource["Back to List"]</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+

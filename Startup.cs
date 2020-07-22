@@ -4,6 +4,8 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Amazon.Auth.AccessControlPolicy;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -15,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Workers.Account;
 using Workers.Models;
 using Workers.Service;
 
@@ -54,7 +57,16 @@ namespace Workers
                 options.SupportedCultures = supportedCultures;
                 options.SupportedUICultures = supportedCultures;
             });
-
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+               .AddCookie(options =>
+               {
+                   options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Authorization");
+                });
+            services.AddTransient<IAuthorizationHandler, Handler>();
+            services.AddAuthorization(opts => {
+                opts.AddPolicy("RolePolicy",
+                    policy => policy.Requirements.Add(new Claim("Admin")));
+            });
             services.AddDbContext<WorkersContext>(options => options.UseMySql(Configuration.GetConnectionString("WorkersContext")));
             services.AddControllersWithViews();
             services.AddScoped<BdBrain, SQLrequest>();
@@ -87,7 +99,7 @@ namespace Workers
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=WorkersModels}/{action=Index}/{id?}");
+                    pattern: "{controller=Account}/{action=Authorization}/{id?}");
             });
         }
     }
