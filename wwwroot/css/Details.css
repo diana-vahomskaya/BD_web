@@ -1,10 +1,12 @@
-﻿.body {
+﻿body {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 80vh;
 }
-
+h1{
+    text-align:center;
+}
 .form {
     width: 500px;
     backdrop-filter: blur(20px);
@@ -14,30 +16,8 @@
     font-family: bold 20px arial-serif;
     letter-spacing: 4px;
 }
-.lang {
-    width: 200px;
-    height: 20px;
-    backdrop-filter: blur(20px);
-    padding: 40px;
-    border-radius: 30px;
-    box-shadow: 0 4px 30px #ccc;
-    font-family: bold 20px arial-serif;
-    letter-spacing: 4px;
-    margin:20px;
-}
-.cult {
-    width: 85px;
-    height:30px;
-    font-size: 16px;
-}
-.form_title {
-    text-align: center;
-    margin: 0 0 32px 0;
-    margin:10px 5px 15px 20px;
-    font-weight: normal;
-    
-}
-.form_button {
+
+.button {
     width: 200px;
     text-align: center;
     padding: 10px 20px;
@@ -47,59 +27,40 @@
     letter-spacing: 1px;
     font-size: 16px;
     color: #cbbade;
-    margin:40px auto;
+    margin: 40px auto;
     outline: none;
     cursor: pointer;
 }
-    .form_button:not(.active) {
+
+    .button:not(.active) {
         box-shadow: 0 4px 30px #ccc;
-        
         background-image: linear-gradient(#d105ff, #fa75ff );
         text-shadow: 0 0 21px rgba(223, 206, 228, 0.5), 0 -1px 0 #311d47;
     }
 
-        .form_button:not(.active):hover,
-        .form_button:not(.active):focus {
+        .button:not(.active):hover,
+        .button:not(.active):focus {
             transition: color 200ms linear, text-shadow 500ms linear;
             color: #fff;
             text-shadow: 0 0 21px rgba(223, 206, 228, 0.5), 0 0 10px rgba(223, 206, 228, 0.4), 0 0 2px #2a153c;
         }
 
-    .form_button:not(:hover) {
+    .button:not(:hover) {
         transition: 0.6s;
     }
-
-.form_group {
-    position: relative;
-    font-family: normal 25px arial;
-    margin-bottom: 32px;
+.col-sm-2 {
+    margin: 10px auto;
+    font-family: bold 25px arial;
 }
-.form_input {
+
+.col-sm-10 {
     font-family: normal 40px arial;
     width: 100%;
-    padding: 0 0 20px 0;
+    padding: 0 0 10px 0;
     border: none;
     border-bottom: 1px solid #e0e0e0;
     background-color: transparent;
     outline: none;
     transition: 0.3s;
+    margin: 15px;
 }
-    .form_input:focus {
-        border-bottom: 1px solid #cf00d6;
-    }
-.form_label {
-    position: absolute;
-   top: 0;
-    z-index: -1;
-    color: #9e9e9e;
-    transition: 0.3s;
-}
-.label {
-    color: #cfb3ff;
-}
-    .label:not(.active):hover,
-    .label:not(.active):focus {
-        transition: color 200ms linear, text-shadow 500ms linear;
-        color: #9900d1;
-        
-    }

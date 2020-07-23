@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -27,66 +26,59 @@ namespace Workers.Controllers
             _logger.LogDebug("Controller AccountController.");
         }
 
-        #region Авторизация
+        
         [HttpGet]
         public IActionResult Authorization() => View();
 
         [HttpPost]
         public async Task<IActionResult> Authorization(WorkersModel workers)
         {
-            _logger.LogInformation("Данные пользователя получены.", nameof(workers));
-
+           
             foreach (var item in Bd.GetWorkers())
                 if (item.Login == workers.Login && item.Password == workers.Password)
                 {
-                    _logger.LogInformation("Авторизация выполнена успешно.", nameof(workers));
+                    _logger.LogInformation("Authorization done", nameof(workers));
 
-                    await Authentication(workers);
+                    await Authentication(Bd.GetLogin(workers.Login));
 
-                    return RedirectToAction("Index", "WorkersModel");
+                    return RedirectToAction("Index", "WorkersModels");
                 }
 
-            _logger.LogWarning("Авторизация не выполнена.", nameof(workers));
+            _logger.LogWarning("Authorization not done", nameof(workers));
 
             return View();
         }
-        #endregion
-
-        #region Регистрация
+       
         [HttpGet]
         public IActionResult Registration() => View();
 
         [HttpPost]
         public async Task<IActionResult> Registration(WorkersModel workers)
         {
-            _logger.LogInformation("Данные пользователя получены.", nameof(workers));
-
-            if (workers == null) throw new ArgumentNullException("Данные пользователя не могут быть пустыми.", nameof(workers));
+            if (workers == null) throw new ArgumentNullException("Date can not be empty", nameof(workers));
 
             if (!ModelState.IsValid)
             {
-                _logger.LogWarning("Не все текстовые поля заполнены.");
-
                 return View();
             }
-
+            
             Bd.Create(workers);
 
-            await Authentication(workers);
+            await Authentication(Bd.GetLogin(workers.Login));
 
             return RedirectToAction("Index", "WorkersModels");
         }
-        #endregion
+        
 
         private async Task Authentication(WorkersModel workers)
         {
             var claims = new List<Claim>
-            {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, workers.Login),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, workers.Role.ToString())
-            };
+                {
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, workers.Login),
+                    new Claim(ClaimTypes.Role, workers.Role)
+                };
 
-            var id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+            var id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimTypes.Role);
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }

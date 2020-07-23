@@ -11,7 +11,7 @@ namespace Workers.Account
         {
             if (context.User.HasClaim(c => c.Type == ClaimTypes.Role))
             {
-                if (context.User.FindFirst(c => c.Type == ClaimTypes.Role).Value == requirement.Role)  //TODO: Ошибка в запросе!
+                if (context.User.FindFirst(c => c.Type == ClaimTypes.Role).Value == requirement.Role) 
                 {
                     context.Succeed(requirement);
                 }

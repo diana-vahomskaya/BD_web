@@ -4,14 +4,15 @@
 @{
     ViewData["Title"] = "Edit";
 }
+<link type="text/css" rel="stylesheet" href='@Url.Content("~/css/Edit.css")' />
+
 
 <h1> @Resource["Edit"] </h1>
 
-<!--<h4>WorkersModel</h4>-->
-<hr />
+
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" class="form">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
@@ -60,15 +61,15 @@
                 <span asp-validation-for="Culture" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="form_button" />
+                <a asp-action="Index">@Resource["Back to List"]</a>
             </div>
+            
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">@Resource["Back to List"]</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

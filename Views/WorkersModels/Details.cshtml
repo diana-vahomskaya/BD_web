@@ -4,10 +4,10 @@
 @{
     ViewData["Title"] = "Details";
 }
-
+    <link type="text/css" rel="stylesheet" href='@Url.Content("~/css/Details.css")' />
 <h1>@Resource["Details"]</h1>
 
-<div>
+<div class="form">
     <!-- <h4>WorkersModel</h4>-->
     <hr />
     <dl class="row">
@@ -35,18 +35,7 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Email)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Login)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Login)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Password)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Password)
-        </dd>
+
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Place)
         </dt>
@@ -66,8 +55,9 @@
             @Html.DisplayFor(model => model.Culture)
         </dd>
     </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">@Resource["Edit"]</a> |
-    <a asp-action="Index">@Resource["Back to List"]</a>
+
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id">@Resource["Edit"]</a> |
+        <a asp-action="Index">@Resource["Back to List"]</a>
+    </div>
 </div>

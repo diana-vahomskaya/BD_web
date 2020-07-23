@@ -201,11 +201,11 @@
   <data name="Role" xml:space="preserve">
     <value>Роль</value>
   </data>
+  <data name="Sign In" xml:space="preserve">
+    <value>Вход</value>
+  </data>
   <data name="Sign Up" xml:space="preserve">
     <value>Регистрация</value>
-  </data>
-  <data name="SignIn" xml:space="preserve">
-    <value>Вход</value>
   </data>
   <data name="Surname" xml:space="preserve">
     <value>Фамилия</value>

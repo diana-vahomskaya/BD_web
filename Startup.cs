@@ -1,17 +1,10 @@
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-using Amazon.Auth.AccessControlPolicy;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc.Razor;
-using Microsoft.Azure.Amqp;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,25 +24,33 @@ namespace Workers
         }
 
         public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        
+  
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddLocalization(options => options.ResourcesPath = "Resources");
-            services.AddControllersWithViews()
-                .AddDataAnnotationsLocalization(options => {
-                    options.DataAnnotationLocalizerProvider = (type, factory) =>
-                        factory.Create(typeof(Resource));
-                })
-                .AddViewLocalization();
+            services.AddDbContext<WorkersContext>(options => options.UseMySql(Configuration.GetConnectionString("WorkersContext")));
+            services.AddControllersWithViews();
+            services.AddScoped<BdBrain, SQLrequest>();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+               .AddCookie(options =>
+               {
+                   options.LoginPath = new PathString("/Account/Authorization");
+                });
+            services.AddTransient<IAuthorizationHandler, Handler>();
+            services.AddAuthorization(opts => {
+                opts.AddPolicy("Policy_role",
+                    policy => policy.Requirements.Add(new Claim("Admin")));
+            });
 
+
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.AddControllersWithViews().AddDataAnnotationsLocalization().AddViewLocalization();
             services.Configure<RequestLocalizationOptions>(options =>
             {
                 var supportedCultures = new[]
                 {
                     new CultureInfo("en"),
-                   // new CultureInfo("de"),
                     new CultureInfo("ru")
                 };
 
@@ -57,22 +58,10 @@ namespace Workers
                 options.SupportedCultures = supportedCultures;
                 options.SupportedUICultures = supportedCultures;
             });
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-               .AddCookie(options =>
-               {
-                   options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Authorization");
-                });
-            services.AddTransient<IAuthorizationHandler, Handler>();
-            services.AddAuthorization(opts => {
-                opts.AddPolicy("RolePolicy",
-                    policy => policy.Requirements.Add(new Claim("Admin")));
-            });
-            services.AddDbContext<WorkersContext>(options => options.UseMySql(Configuration.GetConnectionString("WorkersContext")));
-            services.AddControllersWithViews();
-            services.AddScoped<BdBrain, SQLrequest>();
+       
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+      
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             
@@ -83,7 +72,7 @@ namespace Workers
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+               
                 app.UseHsts();
             }
             app.UseHttpsRedirection();

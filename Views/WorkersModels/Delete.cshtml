@@ -6,12 +6,14 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>@Resource["Delete"]</h1>
-
+<link type="text/css" rel="stylesheet" href='@Url.Content("~/css/Delete.css")' />
+<div class="hh">
+    <h1>@Resource["Delete"]</h1>
+</div>
 <h3>@Resource["Are you sure?"]</h3>
-<div>
-    <!--<h4>WorkersModel</h4>-->
-    <hr />
+<hr />
+<div class="form">
+
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
@@ -37,18 +39,7 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Email)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Login)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Login)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Password)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Password)
-        </dd>
+
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Place)
         </dt>
@@ -71,7 +62,7 @@
 
     <form asp-action="DeleteConfirmed" Delete>
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value=@Resource["Delete"] class="btn btn-danger" /> |
+        <input type="submit" value=@Resource["Delete"] class="button" /> |
         <a asp-action="Index">@Resource["Back to List"]</a>
     </form>
 </div>

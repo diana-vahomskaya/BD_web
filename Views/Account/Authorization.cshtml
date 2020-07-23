@@ -1,36 +1,59 @@
 ﻿@model WorkersModel
+@using Microsoft.AspNetCore.Builder
+@using Microsoft.AspNetCore.Localization
 @using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Options
 @inject IHtmlLocalizer<Workers.Resource> Resource
+@inject IViewLocalizer Localizer
+@inject IOptions<RequestLocalizationOptions> LocOptions
+
+@{ // получаем сервис IRequestCultureFeature
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    // получаем список поддерживаемых культур
+    var cultureItems = LocOptions.Value.SupportedUICultures
+        .Select(c => new SelectListItem { Value = c.Name, Text = c.NativeName })
+        .ToList();
+    var items = new List<SelectListItem>();
+    foreach (var item in cultureItems)
+    {
+        if (item.Text == ViewBag.CurrentCulture) item.Selected = true;
+        
+    } }
+
 @{ ViewBag.Title = "Авторизация"; }
+
 
 <link type="text/css" rel="stylesheet" href='@Url.Content("~/css/StyleSheet.css")' />
 
 
-<div class="text-center">
-    <h1 class="display-4">@Resource["Welcome"]</h1>
-</div>
-
-<form asp-controller="Account" method="post">
-    <div asp-validation-summary="ModelOnly"></div>
-    
-    
-    <div class="box">
-        <div class=" main">
-            <div class="textbox">
-                <label asp-for="Login">@Resource["Login"]:</label>
-                <input type="text" asp-for="Login" placeholder=@Resource["Enter your username"] />
-                <span asp-validation-for="Login"></span><br />
-            </div>
-            <div class="textbox">
-                <label asp-for="Password">@Resource["Password"]:  </label>
-                <input type="password" asp-for="Password" placeholder=@Resource["Enter the password"] />
-                <span asp-validation-for="Password"></span>
-            </div>
-        </div>
-        <input class="button" type="submit" value=@Resource["SignIn"] />
-        <div class="button2">
-           <a asp-action="Registration">@Resource["Sign Up"]</a>
-        </div>
-    </div>
+<form class="lang" asp-controller="WorkersModels" asp-action="SetLanguage" style="margin-top:15px; margin-right: 0px; margin-left:300px"
+      asp-route-returnUrl="@Context.Request.Path"
+      method="post" class="form-horizontal">
+    @Resource["Language"]: <select class="cult" name="culture" onchange="this.form.submit();"
+                                   asp-for="@requestCulture.RequestCulture.UICulture.Name"
+                                   asp-items="cultureItems"></select>
 </form>
+<div class="body">
+
+    <form asp-controller="Account" method="post" class="form">
+        <h1 class="form_title">@Resource["Welcome"]</h1>
+        <div asp-validation-summary="ModelOnly"></div>
+        <span asp-validation-for="Login"></span><br />
+        <span asp-validation-for="Password"></span>
+        <div class="form_group">
+
+            <input class="form_input" type="text" asp-for="Login" placeholder=@Resource["Enter your username"] />
+
+        </div>
+        <div class="form_group">
+
+            <input class="form_input" type="password" asp-for="Password" placeholder=@Resource["Enter the password"] />
+
+        </div>
+
+        <input class="form_button" type="submit" value="@Resource["Sign In"]" />
+
+        <a class="label" asp-action="Registration">@Resource["Sign Up"]</a>
+    </form>
+</div>
 

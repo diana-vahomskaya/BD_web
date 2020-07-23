@@ -42,7 +42,16 @@ namespace Workers.Controllers
         // GET: WorkersModels
 
 
-        public IActionResult Index() => View(Bd.GetWorkers());
+        public IActionResult Index()
+        {
+            if (!string.IsNullOrEmpty(User.Identity.Name)) ViewBag.Message = User.Identity.Name;
+            else ViewBag.Message = "None";
+
+            var worker = Bd.GetLogin(User.Identity.Name);
+            if (worker != null) ViewBag.CurrentCulture = worker.Culture;
+
+            return  View(Bd.GetWorkers());
+        }
         
             /* IQueryable<string> genreQuery = from m in bd.WorkersTable
                                              orderby m.Place
@@ -79,38 +88,18 @@ namespace Workers.Controllers
             _logger.LogWarning("Details can't be opened", id);
             return NotFound();
         }
-        
-        public IActionResult Create()
-        {
-            return View();
-        }
+       
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(WorkersModel workers)
-        {
-            _logger.LogInformation("Data recieved", nameof(workers));
-            if (workers == null) throw new ArgumentNullException("Data cannot be empty", nameof(workers));
-
-            if (!ModelState.IsValid)
-            {
-                _logger.LogWarning("Not all is fieled");
-                return View();
-            }
-            Bd.Create(workers);
-            return RedirectToAction("Index");
-        }
-
+        [HttpGet]
+        [Authorize(Policy = "Policy_role")]
         public IActionResult Edit(int id)
         {
-
             if (Bd.GetWorkers(id) != null) return View(Bd.GetWorkers(id));
-            
             return NotFound();
         }
 
         [HttpPost]
-        [Authorize(Policy = "RolePolicy")]
+        [Authorize(Policy = "Policy_role")]
         public IActionResult Edit(WorkersModel workers)
         {
             _logger.LogInformation("Data opened", nameof(workers));
@@ -119,7 +108,7 @@ namespace Workers.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = "RolePolicy")]
+        [Authorize(Policy = "Policy_role")]
         [ActionName("Delete")]
         public IActionResult DeleteWorker(int id)
         {
@@ -128,6 +117,7 @@ namespace Workers.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Policy_role")]
         public IActionResult DeleteConfirmed(int id)
         {
              if (Bd.GetWorkers(id) != null) Bd.Remove(Bd.GetWorkers(id));

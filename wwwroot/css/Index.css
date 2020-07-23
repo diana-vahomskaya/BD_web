@@ -1,0 +1,80 @@
+﻿
+.WorkerLogin {
+    
+}
+.table {
+    border-collapse: collapse;
+    font-family: arial-serif;
+    width: 500px;
+    margin: 30px auto;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 4px 30px #ccc;
+    border-radius: 20px;
+}
+
+    .table caption {
+        background: #c7adff;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        padding: 10px;
+        box-shadow: 0 2px 4px 0 rgba(0,0,0,.3);
+        color: white;
+        font-family: arial-serif;
+        font-style: normal;
+        font-size: 26px;
+        text-align: center;
+        margin: 0;
+    }
+
+    .table td, .table th {
+        padding: 10px;
+    }
+
+    .table th {
+        text-align: left;
+        font-size: 18px;
+    }
+
+    .table td:last-of-type {
+        text-align: center;
+    }
+
+    .table a {
+        height: 50px;
+        width: 100%;
+        
+        border: rgba(0,0,0,.3) 0px solid;
+        box-sizing: border-box;
+        padding: 10px;
+        color: #FFF;
+        font-family: arial-serif;
+        font-weight: 400;
+        font-size: 16pt;
+        transition: background .4s;
+        cursor: pointer;
+    }
+
+        .table a:hover {
+            color: #c7adff;
+        }
+h1 {
+   
+    text-align: right;
+    font-family: arial-serif;
+}
+.lang {
+    width: 200px;
+    height: 20px;
+    backdrop-filter: blur(20px);
+    padding: 40px;
+    border-radius: 30px;
+    box-shadow: 0 4px 30px #ccc;
+    font-family: bold 20px arial-serif;
+    letter-spacing: 4px;
+}
+
+.cult {
+    width: 85px;
+    height: 30px;
+    font-size: 16px;
+}
