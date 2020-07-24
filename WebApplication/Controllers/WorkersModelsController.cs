@@ -50,7 +50,7 @@ namespace Workers.Controllers
             var worker = Bd.GetLogin(User.Identity.Name);
             if (worker != null) ViewBag.CurrentCulture = worker.Culture;
 
-            return  View(Bd.GetWorkers());
+            return  View(Bd.GetWorkers_workers());
         }
         
             /* IQueryable<string> genreQuery = from m in bd.WorkersTable

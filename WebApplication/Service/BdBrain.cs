@@ -11,7 +11,7 @@ namespace Workers.Service
        
         WorkersModel GetWorkers(int id);
         WorkersModel GetLogin(string log);
-        IEnumerable<WorkersModel> GetWorkers();
+        IEnumerable<WorkersModel> GetWorkers_workers();
 
         void Create(WorkersModel workers);
 

@@ -13,7 +13,7 @@ namespace Workers
         private readonly ILogger<SQLrequest> _logger;
         public WorkersContext WorkersContext { get;}
 
-        public SQLrequest(WorkersContext workersContext,ILogger<SQLrequest>logger)
+        public SQLrequest(WorkersContext workersContext,ILogger<SQLrequest> logger)
         {
             WorkersContext = workersContext;
             _logger = logger;
@@ -34,7 +34,7 @@ namespace Workers
         }
 
 
-        public IEnumerable<WorkersModel> GetWorkers()
+        public IEnumerable<WorkersModel> GetWorkers_workers()
         {
             _logger.LogInformation("List of workers");
            return WorkersContext.WorkersTable.ToList();
@@ -75,7 +75,7 @@ namespace Workers
             _logger.LogInformation("Data recieved", nameof(workers));
             var count = 0;
 
-            foreach (var item in GetWorkers())
+            foreach (var item in GetWorkers_workers())
                 if ((item.Login == workers.Login) && (item.Password == workers.Password)) ++count;
 
             return count > 0 ? throw new ArgumentException("Exist", nameof(workers)) : true;

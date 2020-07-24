@@ -34,7 +34,7 @@ namespace Workers.Controllers
         public async Task<IActionResult> Authorization(WorkersModel workers)
         {
            
-            foreach (var item in Bd.GetWorkers())
+            foreach (var item in Bd.GetWorkers_workers())
                 if (item.Login == workers.Login && item.Password == workers.Password)
                 {
                     _logger.LogInformation("Authorization done", nameof(workers));

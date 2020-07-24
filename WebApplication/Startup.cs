@@ -36,7 +36,8 @@ namespace Workers
                .AddCookie(options =>
                {
                    options.LoginPath = new PathString("/Account/Authorization");
-                });
+                   options.AccessDeniedPath = new PathString("/Account/Authorization");
+               });
             services.AddTransient<IAuthorizationHandler, Handler>();
             services.AddAuthorization(opts => {
                 opts.AddPolicy("Policy_role",
