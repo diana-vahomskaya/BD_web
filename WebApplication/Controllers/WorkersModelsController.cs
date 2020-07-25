@@ -1,17 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-using Amazon.Auth.AccessControlPolicy;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Workers.Models;
 using Workers.Service;
@@ -34,14 +25,7 @@ namespace Workers.Controllers
             _logger.LogDebug("WorkersModelControlller");
 
         }
-        //public WorkersModelsController(WorkersContext context)
-        // {
-        //     _context = context;
-        //}
-
-        // GET: WorkersModels
-
-
+      
         public IActionResult Index()
         {
             if (!string.IsNullOrEmpty(User.Identity.Name)) ViewBag.Message = User.Identity.Name;
@@ -53,34 +37,6 @@ namespace Workers.Controllers
             return  View(Bd.GetWorkers_workers());
         }
         
-            /* IQueryable<string> genreQuery = from m in bd.WorkersTable
-                                             orderby m.Place
-                                             select m.Place;
-             var workers = from m in _context.WorkersTable
-                           select m;
-
-             if (!String.IsNullOrEmpty(searchString))
-             {
-                 workers = workers.Where(s => s.Name.Contains(searchString));
-             }
-
-             if (!string.IsNullOrEmpty(workersPlace))
-             {
-                 workers = workers.Where(x => x.Place == workersPlace);
-             }
-
-             var workersPlaceVM = new PlaceViewModel
-             {
-                 Place = new SelectList(await genreQuery.Distinct().ToListAsync()),
-                 workers = await workers.ToListAsync()
-             };
-
-             return View(workersPlaceVM);*/
-
-           // return View();
-        
-    
-        // GET: WorkersModels/Details/5
         
         public IActionResult Details(int id)
         {

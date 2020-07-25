@@ -1,3 +1,6 @@
+using System.Configuration;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Migrations;
 using System.Globalization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -24,14 +27,16 @@ namespace Workers
         }
 
         public IConfiguration Configuration { get; }
-        
-  
+
+       
         public void ConfigureServices(IServiceCollection services)
         {
+            var connection = Configuration.GetConnectionString("WorkersContext");
 
-            services.AddDbContext<WorkersContext>(options => options.UseMySql(Configuration.GetConnectionString("WorkersContext")));
-            services.AddControllersWithViews();
+            services.AddDbContext<WorkersContext>(options => options.UseMySql(connection));
+            
             services.AddScoped<BdBrain, SQLrequest>();
+
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                .AddCookie(options =>
                {
@@ -65,7 +70,8 @@ namespace Workers
       
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            
+            Migrations(app);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -76,6 +82,9 @@ namespace Workers
                
                 app.UseHsts();
             }
+
+            var options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(options.Value);
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -83,14 +92,25 @@ namespace Workers
 
             app.UseAuthentication();
             app.UseAuthorization();
-            var options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
-            app.UseRequestLocalization(options.Value);
+           
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Account}/{action=Authorization}/{id?}");
             });
+        }
+        private static void Migrations(IApplicationBuilder app)
+        {
+            using (var Service = app.ApplicationServices
+                .GetRequiredService<IServiceScopeFactory>()
+                .CreateScope())
+            {
+                using (var Base = Service.ServiceProvider.GetService<WorkersContext>())
+                {
+                    Base.Database.Migrate();
+                }
+            }
         }
     }
 }

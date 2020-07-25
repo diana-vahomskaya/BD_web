@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Workers.Models
 {
     public class WorkersModel
     {
+        [Key]
         public int Id { get; set; }
 
         [Required(ErrorMessage ="Please specify the name")]
@@ -48,6 +46,7 @@ namespace Workers.Models
 
         [Display(Name = "Role")]
         public string Role { get; set; }
+
         public string Culture { get; set; }
     }
 }

@@ -135,6 +135,9 @@
   <data name="Place" xml:space="preserve">
     <value>Place</value>
   </data>
+  <data name="Please specify the name" xml:space="preserve">
+    <value>Please specify the name</value>
+  </data>
   <data name="SignIn" xml:space="preserve">
     <value>Sign In</value>
   </data>
