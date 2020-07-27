@@ -12,13 +12,9 @@
       "provider": "cdnjs",
       "library": "jquery-validation-unobtrusive@3.2.11",
       "destination": "wwwroot/lib/jquery-validation-unobtrusive/"
-    },
-
-    {
-      "provider": "unpkg",
-      "library": "bootstrap@4.5.0",
-      "destination": "wwwroot/lib/bootstrap/"
     }
+
+
   ],
     "version": "1.0"
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,7 +10,7 @@ namespace Workers.Models
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage ="Please specify the name")]
+       // [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = "Pleasespecifythename", ErrorMessage =null)]
         [Display(Name = "Name")]
         public string Name { get; set; }
 

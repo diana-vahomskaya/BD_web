@@ -27,7 +27,7 @@
 <link type="text/css" rel="stylesheet" href='@Url.Content("~/css/registration.css")' />
 <form class="lang" asp-controller="WorkersModels" asp-action="SetLanguage" style="margin-top:15px; margin-right: 0px; margin-left:300px"
       asp-route-returnUrl="@Context.Request.Path"
-      method="post" class="form-horizontal">
+      method="post" >
     @Resource["Language"]: <select class="cult" name="culture" onchange="this.form.submit();"
                                    asp-for="@requestCulture.RequestCulture.UICulture.Name"
                                    asp-items="cultureItems"></select>

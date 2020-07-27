@@ -183,9 +183,6 @@
   <data name="Please specify the Email Adress" xml:space="preserve">
     <value>Укажите почтовый адрес</value>
   </data>
-  <data name="Please specify the name" xml:space="preserve">
-    <value>Укажите имя</value>
-  </data>
   <data name="Please specify the password" xml:space="preserve">
     <value>Укажите пароль</value>
   </data>
@@ -194,6 +191,9 @@
   </data>
   <data name="Please specify the surname" xml:space="preserve">
     <value>Укажите фамилию</value>
+  </data>
+  <data name="Pleasespecifythename" xml:space="preserve">
+    <value>Укажите имя</value>
   </data>
   <data name="Registration" xml:space="preserve">
     <value>Регистрация</value>

@@ -32,9 +32,16 @@
 </head>
 <body>
     <div class="WorkerLogin">
+
         <h1> @ViewBag.Message</h1><hr />
     </div>
-
+    <form class="lang" asp-controller="WorkersModels" asp-action="SetLanguage" style="margin-top:15px; margin-right: 0px; margin-left:300px"
+          asp-route-returnUrl="@Context.Request.Path"
+          method="post">
+        @Resource["Language"]: <select class="cult" name="culture" onchange="this.form.submit();"
+                                       asp-for="@requestCulture.RequestCulture.UICulture.Name"
+                                       asp-items="cultureItems"></select>
+    </form>
     <table class="table">
         <caption>@Resource["Workers List"]</caption>
         <tr>
@@ -58,8 +65,7 @@
     <td><a asp-action="Details" asp-controller="WorkersModels" asp-route-id="@item.Id">@Resource["Details"]</a></td>
     <td><a asp-action="Edit" asp-controller="WorkersModels" asp-route-id="@item.Id">@Resource["Edit"]</a></td>
     <td><a asp-action="Delete" asp-controller="WorkersModels" asp-route-id="@item.Id">@Resource["Delete"]</a></td>
-</tr>
-}
+</tr>}
     </table>
 </body>
 </html>

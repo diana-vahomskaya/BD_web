@@ -1,6 +1,3 @@
-using System.Configuration;
-using System.Data.Entity.Infrastructure;
-using System.Data.Entity.Migrations;
 using System.Globalization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -27,14 +24,13 @@ namespace Workers
         }
 
         public IConfiguration Configuration { get; }
-
-       
+     
         public void ConfigureServices(IServiceCollection services)
         {
             var connection = Configuration.GetConnectionString("WorkersContext");
 
             services.AddDbContext<WorkersContext>(options => options.UseMySql(connection));
-            
+           // services.AddTransient<IStartupFilter, DataContextAutomaticMigrationStartupFilter<WorkersContext>>();
             services.AddScoped<BdBrain, SQLrequest>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -66,8 +62,19 @@ namespace Workers
             });
        
         }
+        public void Migrations(IApplicationBuilder app)
+        {
+            using (var Service = app.ApplicationServices
+                .GetRequiredService<IServiceScopeFactory>()
+                .CreateScope())
+            {
+                using (var Base = Service.ServiceProvider.GetService<WorkersContext>())
+                {
+                    Base.Database.Migrate();
+                }
+            }
+        }
 
-      
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             Migrations(app);
@@ -100,17 +107,7 @@ namespace Workers
                     pattern: "{controller=Account}/{action=Authorization}/{id?}");
             });
         }
-        private static void Migrations(IApplicationBuilder app)
-        {
-            using (var Service = app.ApplicationServices
-                .GetRequiredService<IServiceScopeFactory>()
-                .CreateScope())
-            {
-                using (var Base = Service.ServiceProvider.GetService<WorkersContext>())
-                {
-                    Base.Database.Migrate();
-                }
-            }
-        }
+
+      
     }
 }
