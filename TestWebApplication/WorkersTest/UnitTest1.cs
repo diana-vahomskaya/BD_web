@@ -16,7 +16,6 @@ namespace WorkersTest
         [Test]
         public void Create_Worker_Test()
         {
-            // Arrange
             //Arrange
             DbContextOptions<WorkersContext> opt;
             var builder = new DbContextOptionsBuilder<WorkersContext>();
@@ -40,6 +39,21 @@ namespace WorkersTest
                 Place = "לעס",
                 Culture = "ru"
             });
+           
+        }
+
+        [Test]
+        public void Edit_Worker_Test()
+        {
+            //Arrange
+            DbContextOptions<WorkersContext> opt;
+            var builder = new DbContextOptionsBuilder<WorkersContext>();
+            builder.UseInMemoryDatabase(databaseName: "database_test");
+            opt = builder.Options;
+
+            var MoqContext = new WorkersContext(opt);
+            var MoqRepo = new SQLrequest(MoqContext, new Logger<SQLrequest>(new LoggerFactory()));
+
             MoqRepo.Create(new WorkersModel
             {
                 Id = 2,
@@ -52,6 +66,32 @@ namespace WorkersTest
                 Place = "לודאפמם",
                 Culture = "ru"
             });
+
+            if (MoqRepo.GetWorkers(2) != null)
+            {
+                var WorkerEdit = MoqRepo.GetWorkers(2);
+                WorkerEdit.Name = "Dima";
+                MoqRepo.Edit(WorkerEdit);
+            }
+            var worker = MoqRepo.GetWorkers_workers();
+            var workerEdit = MoqRepo.GetWorkers(2);
+
+            Assert.AreEqual(2, worker.Count());
+            Assert.AreEqual("Dima", workerEdit.Name);
+        }
+
+        [Test]
+        public void Delete_Worker_test()
+        {
+            //Arrange
+            DbContextOptions<WorkersContext> opt;
+            var builder = new DbContextOptionsBuilder<WorkersContext>();
+            builder.UseInMemoryDatabase(databaseName: "database_test");
+            opt = builder.Options;
+
+            var MoqContext = new WorkersContext(opt);
+            var MoqRepo = new SQLrequest(MoqContext, new Logger<SQLrequest>(new LoggerFactory()));
+
             MoqRepo.Create(new WorkersModel
             {
                 Id = 3,
@@ -68,20 +108,7 @@ namespace WorkersTest
             var worker_delete = MoqRepo.GetWorkers(3);
             if (worker_delete != null) MoqRepo.Remove(worker_delete);
 
-            if (MoqRepo.GetWorkers(2) != null)
-            {
-                var WorkerEdit = MoqRepo.GetWorkers(2);
-                WorkerEdit.Name = "Dima";
-                MoqRepo.Edit(WorkerEdit);
-            }
-
-            var worker = MoqRepo.GetWorkers_workers();
-            var workerEdit = MoqRepo.GetWorkers(2);
-
-            Assert.AreEqual(2, worker.Count());
-            Assert.AreEqual("Dima", workerEdit.Name);
         }
-
         [Test]
         public void GetWorkers_Test()
         {
